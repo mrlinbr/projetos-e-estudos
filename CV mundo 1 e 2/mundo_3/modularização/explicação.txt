@@ -1,0 +1,1 @@
+Aqui antes estavam os modulos, que agora são pacotes. Quis manter este diretorio para deixar mias organizado e façil de lembrar.
