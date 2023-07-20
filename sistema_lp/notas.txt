@@ -1,0 +1,1 @@
+como que converte uma desgraça de uma lista em string para uma lista normal?
