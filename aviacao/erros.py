@@ -77,9 +77,11 @@ class Gerenciamento:
     def cadastro_voo(self):
         # aqui, deve-se realizar o cadastro de um novo voo ao sistema de forma que este não ocupe
         # um espaço já utilizado na tebela
-        codigo = int(input('Por favor, digite o codigo do voo: '))
-        while isnumeric(codigo)
+        codigo = input('Por favor, digite o codigo do voo: ')
         data = input("insira a data do voo no formato 'aaaa/mm/dd': ")
+        while Funcoes.check_data(data):
+            data = input("fomato errado. \ninsira a data do voo no formato 'aaaa/mm/dd': ")
+
         partida = input('De onde o voo partirá?: ')
         destino = input('Qual será o destino do voo?: ')
 
@@ -100,6 +102,8 @@ class Gerenciamento:
 
     def mostrar_voos(self):
         op = int(input('Voce deseja ver TODOS os voos[1] ou checar informações de um especifico?[2]: '))
+        while op not in (1,2):
+            op = int(input('São apenas 2 opções.\nVoce deseja ver TODOS os voos[1] ou checar informações de um especifico?[2]: '))
 
         if op == 1:
             with open('voos.csv','r+') as voos:
@@ -109,23 +113,34 @@ class Gerenciamento:
                     print(line)
         
         if op == 2:
-            codigo = int(input('Qual o codigo do voo que voce deseja ver?: '))
+            codigo = input('Qual o codigo do voo que voce deseja ver?: ')
             with open('voos.csv','r+') as voos:
                 info_voos = csv.DictReader(voos)
 
+                voos = []
+                existe = True
                 for line in info_voos:
-                    if line['codigo'] == str(codigo):
-                        varios_assentos = json.loads(line['assentos-usados'])
-                        print(line)
-                        print(f"Existem {100-len(varios_assentos)} vagos.")
+                    if json.loads(line['codigo']) == str(codigo):
+                        voos.append(line['codigo'])
+
+                if len(voos) == 0:
+                    print(f'O codigo {codigo} não existe no banco de dados.')
+                    existe == False
+
+                if existe:
+                    for line in info_voos:
+                        if line['codigo'] == str(codigo):
+                            varios_assentos = json.loads(line['assentos-usados'])
+                            print(line)
+                            print(f"Existem {100-len(varios_assentos)} vagos.")
 
 
-                        while True:
-                            assento = input('Digite o numero do assento que voce deseja checar a disponibilidade [N para cancelar]: ')
-                            if assento in 'Nn':
-                                break
-                            else:
-                                if assento in varios_assentos: print(f"o assento {assento} está ocupado.")
+                            while True:
+                                assento = input('Digite o numero do assento que voce deseja checar a disponibilidade [N para cancelar]: ')
+                                if assento in 'Nn':
+                                    break
+                                else:
+                                    if assento in varios_assentos: print(f"o assento {assento} está ocupado.")
 
 class Funcoes:
     def __init__(self):
@@ -138,11 +153,15 @@ class Funcoes:
         num_corretos = [4,2,2]
         for e,i in zip(data_list,num_corretos):
             list_num.append([len(e),i])
-        print(list_num)
 
         for k in list_num:
             if k[0] != k[1]:
-                print("Voce digitou a data no Formato erradO. por favor, obedeca o Formato 'AAAA/MM/DD'.")
+                print("Voce digitou a data no Formato errado. por favor, obedeca o Formato 'AAAA/MM/DD'.")
+                return True
+            
+            else:
+                 print("Voce digitou a data no formato correto.")
+                 return False
             break
 
 adm = Gerenciamento()
