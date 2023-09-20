@@ -1,0 +1,10 @@
+[
+    {
+        "pergunta": "Qual é a sua cor favorita?",
+        "opcoes": ["Vermelho", "Azul", "Verde", "Outra"]
+    },
+    {
+        "pergunta": "Qual é o seu animal favorito?",
+        "opcoes": ["Cachorro", "Gato", "Passarinho", "Outro"]
+    }
+]
